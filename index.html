@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Vocabulary Rabbit 0401-0470</title>
+<style>
+  :root {
+    --bg1:#f7f4e8; --bg2:#d9f0ff; --ink:#222; --main:#ff8a00; --sub:#25a4ff; --ok:#13b86f; --ng:#ff4664;
+    --card:rgba(255,255,255,.88);
+  }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body { margin:0; width:100%; height:100%; overflow:hidden; font-family: system-ui, -apple-system, "Hiragino Sans", "Yu Gothic", sans-serif; color:var(--ink); }
+  body {
+    background:
+      radial-gradient(circle at 20% 18%, #fff6bd 0 15%, transparent 16%),
+      radial-gradient(circle at 84% 12%, #ffc7dc 0 10%, transparent 11%),
+      linear-gradient(135deg,var(--bg1),var(--bg2));
+    touch-action: manipulation;
+  }
+  .app { position:relative; width:100vw; height:100dvh; min-height:100svh; padding: max(8px,env(safe-area-inset-top)) 10px max(8px,env(safe-area-inset-bottom)); }
+  .screen { position:absolute; inset:0; display:none; padding:18px; }
+  .screen.active { display:flex; }
+  .title { align-items:center; justify-content:center; text-align:center; }
+  .panel {
+    width:min(920px,96vw); max-height:94svh; overflow:auto; background:var(--card); border:4px solid #222;
+    border-radius:28px; box-shadow:0 14px 0 rgba(0,0,0,.20); padding:22px;
+  }
+  h1 { margin:4px 0 8px; font-size:clamp(34px,7vw,72px); line-height:1; letter-spacing:.02em; }
+  .subtitle { font-weight:800; opacity:.75; font-size:clamp(14px,2.4vw,22px); }
+  .rabbitHero { width:min(240px,42vw); height:auto; margin:10px auto -4px; display:block; filter:drop-shadow(0 10px 0 rgba(0,0,0,.14)); }
+  .choiceRow { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:18px 0; }
+  button {
+    border:3px solid #222; border-radius:20px; background:white; padding:14px 20px; font-weight:900; font-size:clamp(18px,3vw,28px);
+    box-shadow:0 8px 0 #222; transform:translateY(0); cursor:pointer; color:#222;
+  }
+  button:active { transform:translateY(6px); box-shadow:0 2px 0 #222; }
+  .goalBtn.selected { background:#ffe05c; }
+  .startBtn { background:linear-gradient(180deg,#ffce4a,#ff8a00); min-width:min(420px,88vw); font-size:clamp(26px,5vw,44px); }
+  .game { flex-direction:column; gap:10px; }
+  .topbar { display:flex; align-items:center; justify-content:space-between; gap:8px; font-weight:900; }
+  .pill { background:rgba(255,255,255,.8); border:3px solid #222; border-radius:999px; padding:8px 12px; box-shadow:0 4px 0 rgba(0,0,0,.18); }
+  .stage { flex:1; display:grid; grid-template-columns: minmax(170px,300px) 1fr; gap:14px; min-height:0; align-items:stretch; }
+  .rabbitBox { background:rgba(255,255,255,.58); border:3px solid rgba(0,0,0,.2); border-radius:24px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:10px; min-height:0; }
+  .rabbit { width:min(250px,28vw); max-height:45svh; object-fit:contain; filter:drop-shadow(0 10px 0 rgba(0,0,0,.16)); transition:transform .18s ease; }
+  .rabbit.pop { animation:pop .34s ease; }
+  @keyframes pop { 0%{transform:scale(.95) rotate(-3deg)} 50%{transform:scale(1.12) rotate(3deg)} 100%{transform:scale(1)} }
+  .bubble { margin-top:8px; background:#fff; border:3px solid #222; border-radius:18px; padding:10px 12px; font-weight:900; min-height:48px; width:100%; text-align:center; }
+  .quizCard { background:var(--card); border:4px solid #222; border-radius:28px; box-shadow:0 10px 0 rgba(0,0,0,.18); padding:16px; display:flex; flex-direction:column; min-height:0; }
+  .qLabel { font-weight:900; opacity:.65; }
+  .word { font-family: Georgia, "Times New Roman", serif; font-size:clamp(48px,9vw,106px); font-weight:900; text-align:center; margin:2px 0 12px; color:#111; }
+  .answers { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:auto; }
+  .answer { min-height:76px; font-size:clamp(17px,2.5vw,28px); text-align:left; box-shadow:0 7px 0 #222; background:#fff; }
+  .answer.correctFlash { background:#7dffb9; }
+  .answer.wrongFlash { background:#ff9aad; }
+  .combo { font-size:clamp(20px,4vw,44px); color:#ff4b00; text-shadow:2px 2px 0 #fff; }
+  .result { align-items:center; justify-content:center; text-align:center; }
+  .stats { font-size:clamp(18px,3vw,30px); font-weight:900; line-height:1.8; }
+  .small { font-size:14px; opacity:.7; font-weight:700; }
+  .floatText { position:absolute; left:50%; top:44%; transform:translate(-50%,-50%); font-size:clamp(42px,9vw,100px); font-weight:1000; pointer-events:none; text-shadow:4px 4px 0 #fff, -2px -2px 0 #fff; animation:fly .7s ease forwards; z-index:10; }
+  @keyframes fly { from{opacity:0; transform:translate(-50%,-30%) scale(.7)} 20%{opacity:1} to{opacity:0; transform:translate(-50%,-95%) scale(1.25)} }
+  @media (max-width:720px) {
+    .stage { grid-template-columns:1fr; grid-template-rows:auto 1fr; }
+    .rabbitBox { flex-direction:row; justify-content:flex-start; min-height:120px; }
+    .rabbit { width:110px; max-height:115px; }
+    .bubble { margin:0 0 0 8px; }
+    .answers { grid-template-columns:1fr; gap:9px; }
+    .answer { min-height:58px; }
+    .word { font-size:52px; margin:0 0 4px; }
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <section class="screen title active" id="titleScreen">
+    <div class="panel">
+      <h1>Vocabulary<br>Rabbit</h1>
+      <div class="subtitle">0401〜0470 英単語チャレンジ</div>
+      <img class="rabbitHero" id="heroRabbit" alt="rabbit">
+      <div class="subtitle">クリア条件を選んでスタート</div>
+      <div class="choiceRow">
+        <button class="goalBtn selected" data-goal="5" data-mode="normal">5連続</button>
+        <button class="goalBtn" data-goal="10" data-mode="normal">10連続</button>
+        <button class="goalBtn" data-goal="15" data-mode="normal">15連続</button>
+        <button class="goalBtn" data-goal="70" data-mode="block70">70問チャレンジ</button>
+        <button class="goalBtn oniBtn" data-goal="70" data-mode="oni70">鬼70問</button>
+      </div>
+      <button class="startBtn" id="startBtn">START!</button>
+      <p class="small">単語に合う意味をタップ。70問チャレンジは10問ブロック制。鬼70問はミスすると1問目から。</p>
+    </div>
+  </section>
+
+  <section class="screen title" id="studentScreen">
+    <div class="panel">
+      <h1>鬼70問<br>チャレンジ</h1>
+      <div class="subtitle">スクショ提出用に、クラス番号だけ入力してください</div>
+      <div style="margin:20px auto;max-width:520px;text-align:left;">
+        <label for="studentCode" style="display:block;font-weight:900;font-size:clamp(18px,3vw,28px);margin-bottom:8px;">クラス番号</label>
+        <input id="studentCode" inputmode="numeric" autocomplete="off" placeholder="例：20312" maxlength="12"
+          style="width:100%;font-size:clamp(28px,5vw,46px);font-weight:900;padding:14px 18px;border:4px solid #222;border-radius:20px;box-shadow:0 8px 0 rgba(0,0,0,.18);">
+        <div class="small" style="margin-top:8px;">名前は入力しないでください。例：2年3組12番 → 20312 など</div>
+      </div>
+      <div class="choiceRow">
+        <button id="studentStartBtn" class="startBtn">鬼モード開始</button>
+        <button id="studentBackBtn">戻る</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen game" id="gameScreen">
+    <div class="topbar">
+      <div class="pill">目標：<span id="goalView">5</span></div>
+      <div class="pill combo">COMBO <span id="comboView">0</span></div>
+      <div class="pill">TIME <span id="timeView">00:00</span></div>
+      <div class="pill">正解 <span id="scoreView">0</span> / <span id="totalView">0</span></div>
+    </div>
+    <div class="stage">
+      <div class="rabbitBox">
+        <img class="rabbit" id="rabbit" alt="rabbit">
+        <div class="bubble" id="bubble">いくよ！</div>
+      </div>
+      <div class="quizCard">
+        <div class="qLabel" id="numberView">No.0401</div>
+        <div class="word" id="wordView">essential</div>
+        <div class="answers" id="answers"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen result" id="resultScreen">
+    <div class="panel">
+      <h1>Clear!</h1>
+      <img class="rabbitHero" id="resultRabbit" alt="rabbit">
+      <div class="stats">
+        <div><span id="resultGoal">5</span> 達成！</div>
+        <div>正解数：<span id="resultScore">0</span></div>
+        <div>挑戦数：<span id="resultTotal">0</span></div>
+        <div>クリアタイム：<span id="resultTime">00:00</span></div>
+        <div id="certificate" style="display:none;margin-top:12px;padding:16px;border:4px solid #222;border-radius:22px;background:#fff8d6;box-shadow:0 8px 0 rgba(0,0,0,.18);">
+          <div style="font-size:clamp(24px,4vw,42px);font-weight:1000;">鬼70問 完全制覇 認定証</div>
+          <div style="font-size:clamp(20px,3vw,34px);font-weight:1000;">クラス番号：<span id="certStudent">---</span></div>
+          <div style="font-size:clamp(17px,2.4vw,26px);font-weight:900;">あなたは70語を一度も間違えずに走り切りました。</div>
+          <div style="font-size:clamp(20px,3vw,34px);font-weight:1000;">認定タイム：<span id="certTime">00:00</span></div>
+          <div class="small" style="margin-top:8px;">この画面をスクリーンショットして提出してください。</div>
+        </div>
+      </div>
+      <div class="choiceRow">
+        <button id="againBtn">もう一回</button>
+        <button id="homeBtn">タイトルへ</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+const WORDS = [["0401", "essential", "【形】不可欠な"], ["0402", "negative", "【形】消極的な"], ["0403", "replace", "【動】取って代わる"], ["0404", "promote", "【動】促進する"], ["0405", "associate", "【動】連想する"], ["0406", "define", "【動】定義する"], ["0407", "appreciate", "【動】感謝する"], ["0408", "potential", "【形】可能性のある"], ["0409", "art", "【名】芸術"], ["0410", "note", "【名】メモ"], ["0411", "inside", "【前】〜の中に"], ["0412", "object", "【名】対象"], ["0413", "economic", "【形】経済（上）の"], ["0414", "south", "【名】南"], ["0415", "search", "【動】探索する"], ["0416", "suffer", "【動】苦しむ"], ["0417", "ahead", "【副】前方に"], ["0418", "project", "【名】計画"], ["0419", "neither", "【副】どちらも〜でない"], ["0420", "invite", "【動】招待する"], ["0421", "angry", "【形】怒った"], ["0422", "attend", "【動】出席する"], ["0423", "citizen", "【名】市民"], ["0424", "species", "【名】種"], ["0425", "attract", "【動】引きつける"], ["0426", "excuse", "【動】言い訳する"], ["0427", "ignore", "【動】無視する"], ["0428", "function", "【名】機能"], ["0429", "access", "【名】出入り［利用・接近］する方法［手段］"], ["0430", "participate", "【動】参加する"], ["0431", "trend", "【名】傾向"], ["0432", "recommend", "【動】推薦する"], ["0433", "wish", "【動】望む"], ["0434", "fear", "【動】恐れる"], ["0435", "date", "【名】日取り"], ["0436", "pull", "【動】引っ張る"], ["0437", "aware", "【形】気づいて"], ["0438", "mark", "【名】点数"], ["0439", "achieve", "【動】達成する"], ["0440", "disease", "【名】病気"], ["0441", "sale", "【名】販売"], ["0442", "strength", "【名】力"], ["0443", "wild", "【形】野生の"], ["0444", "weekend", "【名】週末"], ["0445", "pair", "【名】一組"], ["0446", "gift", "【名】才能"], ["0447", "brain", "【名】脳"], ["0448", "highly", "【副】大いに"], ["0449", "task", "【名】任務"], ["0450", "series", "【名】連続"], ["0451", "prevent", "【動】妨げる"], ["0452", "professor", "【名】教授"], ["0453", "magazine", "【名】雑誌"], ["0454", "regard", "【名】心づかい"], ["0455", "handle", "【動】扱う"], ["0456", "safety", "【名】安全"], ["0457", "atmosphere", "【名】大気"], ["0458", "correct", "【形】正しい"], ["0459", "ordinary", "【形】普通の"], ["0460", "select", "【動】選ぶ"], ["0461", "career", "【名】職業"], ["0462", "rely", "【動】頼みにする"], ["0463", "item", "【名】項目"], ["0464", "positive", "【形】積極的な"], ["0465", "estimate", "【動】見積もる"], ["0466", "option", "【名】選択（権）"], ["0467", "land", "【名】土地"], ["0468", "goal", "【名】目標"], ["0469", "speech", "【名】演説"], ["0470", "sign", "【名】掲示"]];
+const IMAGE_BASE = "https://sumida-passion.github.io/usagivoca1-70/images/";
+const RABBITS = Array.from({length:16}, (_,i) => IMAGE_BASE + "rabbit" + String(i+1).padStart(2,"0") + ".png?v=20260523");
+
+const state = {
+  goal: 5, mode: 'normal', combo: 0, score: 0, total: 0, current: null, locked: false,
+  lastWords: [], challenge: [], challengeIndex: 0, startTime: 0, timerId: null, elapsed: 0, studentCode: ''
+};
+
+const el = {
+  title: document.getElementById('titleScreen'), game: document.getElementById('gameScreen'),
+  student: document.getElementById('studentScreen'), result: document.getElementById('resultScreen'),
+  goalView: document.getElementById('goalView'), comboView: document.getElementById('comboView'),
+  scoreView: document.getElementById('scoreView'), totalView: document.getElementById('totalView'),
+  timeView: document.getElementById('timeView'), numberView: document.getElementById('numberView'),
+  wordView: document.getElementById('wordView'), answers: document.getElementById('answers'),
+  rabbit: document.getElementById('rabbit'), bubble: document.getElementById('bubble'),
+  heroRabbit: document.getElementById('heroRabbit'), resultRabbit: document.getElementById('resultRabbit'),
+  resultGoal: document.getElementById('resultGoal'), resultScore: document.getElementById('resultScore'),
+  resultTotal: document.getElementById('resultTotal'), resultTime: document.getElementById('resultTime'),
+  certificate: document.getElementById('certificate'), certTime: document.getElementById('certTime'),
+  certStudent: document.getElementById('certStudent'), studentCode: document.getElementById('studentCode'),
+  studentStartBtn: document.getElementById('studentStartBtn'), studentBackBtn: document.getElementById('studentBackBtn')
+};
+
+el.heroRabbit.src = RABBITS[0]; el.rabbit.src = RABBITS[0]; el.resultRabbit.src = RABBITS[15];
+
+function show(screen) {
+  [el.title, el.student, el.game, el.result].forEach(s => s.classList.remove('active'));
+  screen.classList.add('active');
+}
+
+document.querySelectorAll('.goalBtn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.goalBtn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    state.goal = Number(btn.dataset.goal);
+    state.mode = btn.dataset.mode || 'normal';
+  });
+});
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  if (state.mode === 'oni70') {
+    el.studentCode.value = state.studentCode || '';
+    show(el.student);
+    setTimeout(() => el.studentCode.focus(), 120);
+  } else startGame();
+});
+document.getElementById('againBtn').addEventListener('click', startGame);
+document.getElementById('homeBtn').addEventListener('click', () => show(el.title));
+el.studentBackBtn.addEventListener('click', () => show(el.title));
+el.studentStartBtn.addEventListener('click', () => {
+  const code = sanitizeCode(el.studentCode.value);
+  if (!code) {
+    el.studentCode.style.background = '#ffe1eb';
+    setRabbit(1, '番号を入れてね');
+    return;
+  }
+  state.studentCode = code;
+  startGame();
+});
+el.studentCode.addEventListener('input', () => {
+  el.studentCode.value = sanitizeCode(el.studentCode.value);
+  el.studentCode.style.background = '#fff';
+});
+el.studentCode.addEventListener('keydown', (e) => { if (e.key === 'Enter') el.studentStartBtn.click(); });
+
+function sanitizeCode(value) { return String(value || '').replace(/[^0-9A-Za-z\-]/g, '').slice(0, 12); }
+
+function startGame() {
+  state.combo = 0; state.score = 0; state.total = 0; state.locked = false; state.lastWords = [];
+  state.challenge = createChallengeSet(state.goal, state.mode);
+  state.challengeIndex = 0; state.startTime = Date.now(); state.elapsed = 0;
+  startTimer(); updateStats(); setRabbit(0, 'いくよ！'); show(el.game); nextQuestion();
+}
+
+function updateStats() {
+  el.goalView.textContent = modeLabel(); el.comboView.textContent = state.combo;
+  el.scoreView.textContent = state.score; el.totalView.textContent = state.total;
+  el.timeView.textContent = formatTime(state.elapsed);
+}
+
+function modeLabel() {
+  if (state.mode === 'block70') return '70問チャレンジ';
+  if (state.mode === 'oni70') return '鬼70問';
+  return state.goal + '連続';
+}
+
+function startTimer() {
+  if (state.timerId) clearInterval(state.timerId);
+  state.timerId = setInterval(() => {
+    state.elapsed = Math.floor((Date.now() - state.startTime) / 1000);
+    if (el.timeView) el.timeView.textContent = formatTime(state.elapsed);
+  }, 250);
+}
+function stopTimer() {
+  if (state.timerId) clearInterval(state.timerId);
+  state.timerId = null;
+  state.elapsed = Math.floor((Date.now() - state.startTime) / 1000);
+}
+function formatTime(sec) {
+  const m = String(Math.floor(sec / 60)).padStart(2, '0');
+  const s = String(sec % 60).padStart(2, '0');
+  return m + ':' + s;
+}
+function shuffle(a) {
+  const arr = a.slice();
+  for (let i=arr.length-1;i>0;i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+function createChallengeSet(count, mode) {
+  let picked;
+  if (mode === 'block70' || mode === 'oni70') picked = shuffle(WORDS).slice(0, Math.min(count, WORDS.length));
+  else picked = shuffle(WORDS).slice(0, count);
+  return picked.map(q => {
+    const wrongs = shuffle(WORDS.filter(w => w[0] !== q[0])).slice(0, 3);
+    return { q, choices: shuffle([q, ...wrongs]) };
+  });
+}
+function nextQuestion() {
+  state.locked = false;
+  const item = state.challenge[state.challengeIndex];
+  const q = item.q;
+  state.current = q;
+  el.numberView.textContent = 'No.' + q[0] + '　' + (state.challengeIndex + 1) + '/' + state.challenge.length;
+  el.wordView.textContent = q[1];
+  el.answers.innerHTML = '';
+  item.choices.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'answer';
+    b.textContent = c[2];
+    b.addEventListener('click', () => answer(c, b));
+    el.answers.appendChild(b);
+  });
+}
+function answer(choice, btn) {
+  if (state.locked) return;
+  state.locked = true;
+  state.total++;
+  const ok = choice[0] === state.current[0];
+  if (ok) {
+    state.score++; state.combo++; state.challengeIndex++;
+    btn.classList.add('correctFlash'); correctEffect();
+    if (state.challengeIndex >= state.challenge.length) {
+      updateStats(); setTimeout(clearGame, 800); return;
+    }
+  } else {
+    state.combo = 0;
+    if (state.mode === 'block70') state.challengeIndex = Math.floor(state.challengeIndex / 10) * 10;
+    else state.challengeIndex = 0;
+    btn.classList.add('wrongFlash');
+    [...el.answers.children].forEach(b => { if (b.textContent === state.current[2]) b.classList.add('correctFlash'); });
+    wrongEffect();
+  }
+  updateStats();
+  setTimeout(nextQuestion, ok ? 650 : 1050);
+}
+function setRabbit(index, text) {
+  el.rabbit.src = RABBITS[index % RABBITS.length];
+  el.rabbit.classList.remove('pop');
+  void el.rabbit.offsetWidth;
+  el.rabbit.classList.add('pop');
+  el.bubble.textContent = text;
+}
+function correctEffect() {
+  const imgs = [5,6,7,9,13,14];
+  const lines = ['キター！', 'おおお!!', 'いい感じ！', 'その調子！', '連続だ！', 'オーッ!!'];
+  const i = Math.floor(Math.random()*imgs.length);
+  setRabbit(imgs[i], lines[i]);
+  soundOK();
+  floatText(state.combo >= 3 ? state.combo + ' COMBO!' : 'OK!', '#13b86f');
+}
+function wrongEffect() {
+  const imgs = [1,4,8,10,11,12];
+  const lines = ['うーん…', 'え!?', '惜しい！', 'もう一回！', '落ち着いて！', '次いこう！'];
+  const i = Math.floor(Math.random()*imgs.length);
+  setRabbit(imgs[i], lines[i]);
+  soundNG();
+  floatText('MISS!', '#ff4664');
+}
+function clearGame() {
+  stopTimer(); soundClear(); show(el.result);
+  el.resultRabbit.src = RABBITS[15];
+  el.resultGoal.textContent = modeLabel();
+  el.resultScore.textContent = state.score;
+  el.resultTotal.textContent = state.total;
+  el.resultTime.textContent = formatTime(state.elapsed);
+  if (state.mode === 'oni70') {
+    el.certificate.style.display = 'block';
+    el.certTime.textContent = formatTime(state.elapsed);
+    el.certStudent.textContent = state.studentCode || '---';
+  } else el.certificate.style.display = 'none';
+  floatText('CLEAR!', '#ff8a00');
+}
+function floatText(text, color) {
+  const d = document.createElement('div');
+  d.className = 'floatText';
+  d.textContent = text;
+  d.style.color = color;
+  document.getElementById('app').appendChild(d);
+  setTimeout(()=>d.remove(), 750);
+}
+
+let audioCtx = null;
+function getAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+function beep(freq, time, type='sine', gain=.08, delay=0) {
+  const ctx = getAudio();
+  const osc = ctx.createOscillator();
+  const g = ctx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
+  g.gain.setValueAtTime(0.0001, ctx.currentTime + delay);
+  g.gain.exponentialRampToValueAtTime(gain, ctx.currentTime + delay + 0.015);
+  g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + delay + time);
+  osc.connect(g).connect(ctx.destination);
+  osc.start(ctx.currentTime + delay);
+  osc.stop(ctx.currentTime + delay + time + 0.02);
+}
+function soundOK() {
+  beep(740,.09,'square',.06,0); beep(980,.10,'square',.055,.08); beep(1320,.12,'triangle',.05,.17);
+}
+function soundNG() { beep(220,.16,'sawtooth',.08,0); beep(150,.18,'sawtooth',.06,.12); }
+function soundClear() {
+  [523,659,784,1046,1318].forEach((f,i)=>beep(f,.16,'square',.07,i*.09));
+  setTimeout(()=>{try{navigator.vibrate && navigator.vibrate([40,30,40]);}catch(e){}},50);
+}
+</script>
+</body>
+</html>
